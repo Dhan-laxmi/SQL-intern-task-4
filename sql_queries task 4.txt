@@ -1,0 +1,74 @@
+create database task4;
+use task4;
+
+create table flights(
+flight_id int primary key,
+airline varchar(100),
+origin varchar(100),
+destination varchar(100),
+distance_km int,
+duration_minutes int,
+ticket_price real,
+passengers int
+);
+
+desc flights;
+
+INSERT INTO flights (flight_id, airline, origin, destination, distance_km, duration_minutes, ticket_price, passengers) VALUES
+(1, 'AirIndia', 'Delhi', 'Mumbai', 1400, 130, 6500, 180),
+(2, 'IndiGo', 'Bangalore', 'Delhi', 1700, 160, 7200, 200),
+(3, 'Vistara', 'Delhi', 'Chennai', 2200, 190, 8500, 150),
+(4, 'SpiceJet', 'Kolkata', 'Mumbai', 2050, 180, 7800, 170),
+(5, 'AirIndia', 'Chennai', 'Hyderabad', 630, 80, 4200, 160),
+(6, 'IndiGo', 'Delhi', 'Goa', 1500, 150, 7000, 140),
+(7, 'Vistara', 'Mumbai', 'Bangalore', 980, 110, 6000, 190),
+(8, 'SpiceJet', 'Delhi', 'Kolkata', 1500, 140, 6900, 210),
+(9, 'AirIndia', 'Mumbai', 'Dubai', 3000, 250, 15000, 220),
+(10, 'IndiGo', 'Goa', 'Delhi', 1500, 150, 7000, 130);
+select * from flights;
+
+# Total passengers carried by each airline
+SELECT airline, SUM(passengers) AS total_passengers
+FROM flights
+GROUP BY airline;
+
+# Average ticket price by airline
+SELECT airline, ROUND(AVG(ticket_price), 2) AS avg_price
+FROM flights
+GROUP BY airline;
+
+# Number of flights operated by each airline
+SELECT airline, COUNT(*) AS total_flights
+FROM flights
+GROUP BY airline;
+
+# Longest flight distance by airline
+SELECT airline, MAX(distance_km) AS longest_distance
+FROM flights
+GROUP BY airline;
+
+# Shortest flight duration by airline
+select airline, min(duration_minutes) as shortest_duration from flights group by airline;
+
+# Filter airlines with average ticket price above ₹7,000
+SELECT airline, ROUND(AVG(ticket_price), 2) AS avg_price
+FROM flights
+GROUP BY airline
+HAVING AVG(ticket_price) > 7000;
+
+# Total distance flown by each airline
+SELECT airline, SUM(distance_km) AS total_distance
+FROM flights
+GROUP BY airline;
+
+# Count distinct airlines
+select count(distinct airline) as distinct_airlines from flights;
+
+# Group by multiple columns (airline & origin city)
+select airline,origin, count(*) as flights_from_city
+from flights
+group by airline,origin
+order by airline,origin;
+
+
+
